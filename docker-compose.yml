@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  app:
+    # Constrói a partir do Dockerfile que acabou de criar
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: savi_app
+    restart: unless-stopped
+    # Mapeia a porta 8000 host → 80 container (Apache)
+    ports:
+      - "8000:80"
+    # Passa as variáveis de ambiente (você pode ajustar conforme seu .env)
+    environment:
+      APP_ENV: local
+      APP_DEBUG: true
+      APP_KEY: base64:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      # Configuração do banco (ponto para o serviço 'db')
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: savi_db
+      DB_USERNAME: savi_user
+      DB_PASSWORD: savi_pass
+    # Monta o código local interativamente (ajuste conforme preferir)
+    volumes:
+      - ./:/var/www/html
+
+  db:
+    # Usa a imagem oficial do MariaDB 10.11 (ou 10.4, se preferir)
+    image: mariadb:10.11
+    container_name: savi_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: savi_db
+      MYSQL_USER: savi_user
+      MYSQL_PASSWORD: savi_pass
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
