@@ -1,77 +1,165 @@
-// resources/js/Components/Topbar.tsx
 import { Link } from '@inertiajs/react';
 import { FaInstagram, FaFacebookF } from 'react-icons/fa';
+import { HiOutlineMenu, HiOutlineX } from 'react-icons/hi';
+import { Menu, Transition } from '@headlessui/react';
+import { Fragment, useState } from 'react';
 
 export default function Topbar() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
-    <header className="w-full bg-white shadow-md">
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
-        {/* ---------------- LOGO À ESQUERDA ---------------- */}
-        <div className="flex items-center space-x-2">
-          <Link href={route('home')} className="flex items-center">
-            <img
-              src="/images/logoazul.svg"
-              alt="Savi Administrativo"
-              className="w-20 h-20 object-contain"
-            />
-          </Link>
+    <header className="w-full bg-white shadow-md sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3 md:py-4">
+        {/* Logo */}
+        <Link href={route('home')} className="flex items-center space-x-2">
+          <img
+            src="/images/logoazul.svg"
+            alt="Savi Administrativo"
+            className="w-16 h-16 object-contain"
+          />
+        </Link>
+
+        {/* Botão Mobile */}
+        <div className="md:hidden">
+          <Menu as="div" className="relative">
+            <Menu.Button
+              className="text-gray-700 hover:text-gray-900 focus:outline-none"
+              onClick={() => setMenuOpen(!menuOpen)}
+            >
+              {menuOpen ? <HiOutlineX size={28} /> : <HiOutlineMenu size={28} />}
+            </Menu.Button>
+
+            <Transition
+              as={Fragment}
+              show={menuOpen}
+              enter="transition ease-out duration-200"
+              enterFrom="opacity-0 scale-95 -translate-y-3"
+              enterTo="opacity-100 scale-100 translate-y-0"
+              leave="transition ease-in duration-150"
+              leaveFrom="opacity-100 scale-100 translate-y-0"
+              leaveTo="opacity-0 scale-95 -translate-y-3"
+            >
+              <Menu.Items
+                static
+                className="absolute right-0 mt-4 w-72 origin-top-right rounded-xl bg-white/90 backdrop-blur shadow-lg ring-1 ring-black/10 focus:outline-none z-50 p-6 space-y-4"
+              >
+                {/* Navegação */}
+                <Menu.Item>
+                  {() => (
+                    <Link
+                      href={route('home')}
+                      className="block text-lg font-medium text-gray-800 hover:text-green-700 transition"
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      Home
+                    </Link>
+                  )}
+                </Menu.Item>
+                <Menu.Item>
+                  {() => (
+                    <Link
+                      href={route('contato')}
+                      className="block text-lg font-medium text-gray-800 hover:text-green-700 transition"
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      Contato
+                    </Link>
+                  )}
+                </Menu.Item>
+                <Menu.Item>
+                  {() => (
+                    <Link
+                      href={route('programas')}
+                      className="block text-lg font-medium text-gray-800 hover:text-green-700 transition"
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      Projetos
+                    </Link>
+                  )}
+                </Menu.Item>
+                <Menu.Item>
+                  {() => (
+                    <Link
+                      href="#"
+                      className="block text-lg font-medium text-gray-800 hover:text-green-700 transition"
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      
+                    </Link>
+                  )}
+                </Menu.Item>
+
+                {/* Ações */}
+                <div className="pt-4 border-t border-gray-200">
+                  <Link
+                    href={route('contato')}
+                    className="block w-full text-center bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-base font-semibold transition"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    Fale com a gente
+                  </Link>
+                  <div className="flex justify-center gap-4 mt-4">
+                    <a
+                      href="https://www.instagram.com/savi_ong"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-700 hover:text-pink-600 transition"
+                    >
+                      <FaInstagram size={22} />
+                    </a>
+                    <a
+                      href="https://www.facebook.com/share/19B5GizWfh"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-700 hover:text-blue-600 transition"
+                    >
+                      <FaFacebookF size={22} />
+                    </a>
+                  </div>
+                </div>
+              </Menu.Items>
+            </Transition>
+          </Menu>
         </div>
 
-        {/* --------------- LINKS DE NAVEGAÇÃO --------------- */}
-        <nav className="flex items-center space-x-6">
-          <Link
-            href={route('home')}
-            className="text-gray-700 hover:text-gray-900 transition-colors"
-          >
+        {/* Desktop nav */}
+        <nav className="hidden md:flex items-center space-x-6">
+          <Link href={route('home')} className="text-gray-700 hover:text-gray-900">
             Home
           </Link>
-          <Link
-            href={route('contato')}
-            className="text-gray-700 hover:text-gray-900 transition-colors"
-          >
+          <Link href={route('contato')} className="text-gray-700 hover:text-gray-900">
             Contato
           </Link>
-          <Link
-            href={route('programas')}
-            className="text-gray-700 hover:text-gray-900 transition-colors"
-          >
-            Programas
+          <Link href={route('programas')} className="text-gray-700 hover:text-gray-900">
+            Projetos
           </Link>
-          <Link
-            href={''}
-            className="text-gray-700 hover:text-gray-900 transition-colors"
-          >
-            Equipe
+          <Link href="#" className="text-gray-700 hover:text-gray-900">
+            
           </Link>
         </nav>
 
-        {/* ------------ BOTÕES/ÍCONES À DIREITA ------------ */}
-        <div className="flex flex-col items-end space-y-2">
-          {/* Botão “Fale com a gente” */}
+        {/* Desktop Ações */}
+        <div className="hidden md:flex flex-col items-end space-y-2">
           <Link
             href={route('contato')}
-            className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors text-sm font-medium"
+            className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 text-sm font-medium"
           >
             Fale com a gente
           </Link>
-
-          {/* Ícones de Redes Sociais (monocromáticos) */}
-          <div className="flex space-x-4 mt-1">
-            {/* Instagram */}
+          <div className="flex space-x-4">
             <a
-              href="https://www.instagram.com/savi_ong?igsh=MXNhbDljd3ZzeXh0Mg=="
+              href="https://www.instagram.com/savi_ong"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-700 hover:text-gray-900 transition-colors"
+              className="text-gray-700 hover:text-pink-600"
             >
               <FaInstagram size={20} />
             </a>
-            {/* Facebook */}
             <a
-              href="https://www.facebook.com/share/19B5GizWfh/?mibextid=wwXIfr"
+              href="https://www.facebook.com/share/19B5GizWfh"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-700 hover:text-gray-900 transition-colors"
+              className="text-gray-700 hover:text-blue-600"
             >
               <FaFacebookF size={20} />
             </a>
