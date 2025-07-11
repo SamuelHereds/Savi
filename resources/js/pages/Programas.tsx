@@ -60,9 +60,9 @@ const projects = [
     image: "https://images.pexels.com/photos/8613089/pexels-photo-8613089.jpeg?auto=compress&cs=tinysrgb&w=800",
     description: "Programa educativo que leva conhecimento sobre sustentabilidade e preservação ambiental para estudantes de todas as idades.",
     fullDescription: "Nosso programa de Educação Ambiental atende escolas públicas e privadas de Itabira, oferecendo workshops, palestras e atividades práticas sobre sustentabilidade, reciclagem e preservação do meio ambiente.",
-    impact: "8.500+ estudantes alcançados",
+    impact: "3.000+ estudantes alcançados",
     beneficiaries: "25 escolas",
-    duration: "2015 - Presente",
+    duration: "2012 - Presente",
     location: "Itabira e região",
     partners: ["Secretaria de Educação", "UNIFEI", "Colégio Objetivo"],
     goals: [
@@ -104,13 +104,12 @@ const projects = [
   },
   {
     id: 4,
-    title: "Preservação de Nascentes",
+    title: "Projeto Mãe D'água",
     category: "Recursos Hídricos",
     status: "Em Andamento",
     image: "https://images.pexels.com/photos/1906658/pexels-photo-1906658.jpeg?auto=compress&cs=tinysrgb&w=800",
     description: "Projeto de recuperação e preservação de nascentes na região de Itabira, garantindo a qualidade da água para as futuras gerações.",
-    fullDescription: "Trabalhamos na identificação, recuperação e preservação de nascentes na região metropolitana de Itabira, implementando técnicas de conservação do solo e reflorestamento ciliar para garantir a qualidade e quantidade da água.",
-    impact: "25 nascentes recuperadas",
+    fullDescription: "Foi um programa de recuperação de áreas degradadas e de mata ciliar, desenvolvido ao longo de cerca de 2 anos, em parceria com o SAAE de Itabira (Serviço Autônomo de Água e Esgoto) e contando com recursos federais. O foco era a bacia do córrego Mãe d'Água, afluente importante do Manancial Pureza, principal fonte de abastecimento de água do município ",
     beneficiaries: "12.000 pessoas",
     duration: "2019 - Presente",
     location: "Região de Itabira",
@@ -188,9 +187,9 @@ const categories = [
 ];
 
 const stats = [
-  { number: "150+", label: "Projetos Realizados", icon: <Target className="w-5 h-5 sm:w-6 sm:h-6" /> },
-  { number: "35k+", label: "Pessoas Impactadas", icon: <Users className="w-5 h-5 sm:w-6 sm:h-6" /> },
-  { number: "85%", label: "Taxa de Sucesso", icon: <Award className="w-5 h-5 sm:w-6 sm:h-6" /> },
+  { number: "150+", label: "Intervenções", icon: <Target className="w-5 h-5 sm:w-6 sm:h-6" /> },
+  { number: "60k+", label: "Pessoas Impactadas", icon: <Users className="w-5 h-5 sm:w-6 sm:h-6" /> },
+  { number: "100%", label: "Taxa de Sucesso", icon: <Award className="w-5 h-5 sm:w-6 sm:h-6" /> },
   { number: "12", label: "Parceiros Ativos", icon: <HandHeart className="w-5 h-5 sm:w-6 sm:h-6" /> }
 ];
 
@@ -368,112 +367,115 @@ const ProjectsPage = () => {
         </div>
       </section>
 
-      {/* Project Modal */}
-      {selectedProject && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="relative">
-              <img 
-                src={selectedProject.image} 
-                alt={selectedProject.title}
-                className="w-full h-48 sm:h-64 object-cover"
-              />
-              <button 
-                onClick={() => setSelectedProject(null)}
-                className="absolute top-4 right-4 bg-white bg-opacity-90 hover:bg-opacity-100 p-2 rounded-full transition-colors"
-              >
-                <ArrowRight className="w-5 h-5 rotate-45" />
-              </button>
-              <div className="absolute bottom-4 left-4 flex gap-2">
-                <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(selectedProject.status)}`}>
-                  {selectedProject.status}
-                </span>
-              </div>
-            </div>
-            
-            <div className="p-6 sm:p-8">
-              <div className="flex items-center mb-4">
-                {getCategoryIcon(selectedProject.category)}
-                <span className="ml-2 text-green-600 font-medium text-sm sm:text-base">{selectedProject.category}</span>
-              </div>
-              
-              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">{selectedProject.title}</h2>
-              <p className="text-gray-600 text-base sm:text-lg leading-relaxed mb-6">{selectedProject.fullDescription}</p>
-              
-              {/* Project Stats */}
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 sm:mb-8">
-                <div className="bg-green-50 p-4 rounded-lg text-center">
-                  <div className="text-lg sm:text-xl font-bold text-green-600 mb-1">{selectedProject.impact}</div>
-                  <div className="text-gray-600 text-xs sm:text-sm">Impacto Direto</div>
-                </div>
-                <div className="bg-blue-50 p-4 rounded-lg text-center">
-                  <div className="text-lg sm:text-xl font-bold text-blue-600 mb-1">{selectedProject.beneficiaries}</div>
-                  <div className="text-gray-600 text-xs sm:text-sm">Beneficiários</div>
-                </div>
-                <div className="bg-purple-50 p-4 rounded-lg text-center">
-                  <div className="text-lg sm:text-xl font-bold text-purple-600 mb-1">{selectedProject.duration}</div>
-                  <div className="text-gray-600 text-xs sm:text-sm">Duração</div>
-                </div>
-                <div className="bg-orange-50 p-4 rounded-lg text-center">
-                  <div className="text-lg sm:text-xl font-bold text-orange-600 mb-1">{selectedProject.partners.length}</div>
-                  <div className="text-gray-600 text-xs sm:text-sm">Parceiros</div>
-                </div>
-              </div>
-              
-              {/* Goals */}
-              <div className="mb-6 sm:mb-8">
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-4">Objetivos e Metas</h3>
-                <div className="grid sm:grid-cols-2 gap-3">
-                  {selectedProject.goals.map((goal, index) => (
-                    <div key={index} className="flex items-center">
-                      <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-600 mr-3 flex-shrink-0" />
-                      <span className="text-gray-700 text-sm sm:text-base">{goal}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              
-              {/* Partners */}
-              <div className="mb-6 sm:mb-8">
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-4">Parceiros</h3>
-                <div className="flex flex-wrap gap-2">
-                  {selectedProject.partners.map((partner, index) => (
-                    <span key={index} className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">
-                      {partner}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              
-              {/* Gallery */}
-              <div className="mb-6 sm:mb-8">
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-4">Galeria do Projeto</h3>
-                <div className="grid grid-cols-3 gap-2 sm:gap-4">
-                  {selectedProject.gallery.map((image, index) => (
-                    <img 
-                      key={index}
-                      src={image} 
-                      alt={`${selectedProject.title} - ${index + 1}`}
-                      className="w-full h-20 sm:h-24 object-cover rounded-lg hover:opacity-80 transition-opacity cursor-pointer"
-                    />
-                  ))}
-                </div>
-              </div>
-              
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center justify-center text-sm sm:text-base">
-                  <Heart className="w-4 h-4 mr-2" />
-                  Apoiar este projeto
-                </button>
-                <button className="border-2 border-green-600 text-green-600 hover:bg-green-50 px-6 py-3 rounded-lg font-medium transition-colors flex items-center justify-center text-sm sm:text-base">
-                  <Users className="w-4 h-4 mr-2" />
-                  Ser voluntário
-                </button>
-              </div>
-            </div>
+{selectedProject && (
+  <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+    <div className="bg-white rounded-2xl shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto relative">
+      {/* Header com imagem e botão de fechar */}
+      <div className="relative">
+        <img
+          src={selectedProject.image}
+          alt={selectedProject.title}
+          className="w-full h-48 sm:h-64 object-cover rounded-t-2xl"
+        />
+        <button
+          onClick={() => setSelectedProject(null)}
+          className="absolute top-4 right-4 bg-white border border-gray-300 hover:bg-gray-100 text-gray-700 p-2 rounded-full transition"
+        >
+          <ArrowRight className="w-5 h-5 rotate-45" />
+        </button>
+        <div className="absolute bottom-4 left-4 flex gap-2">
+          <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(selectedProject.status)}`}>
+            {selectedProject.status}
+          </span>
+        </div>
+      </div>
+
+      {/* Corpo do modal */}
+      <div className="p-6 sm:p-8">
+        <div className="flex items-center mb-4">
+          {getCategoryIcon(selectedProject.category)}
+          <span className="ml-2 text-green-600 font-medium text-sm sm:text-base">{selectedProject.category}</span>
+        </div>
+
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">{selectedProject.title}</h2>
+        <p className="text-gray-600 text-base sm:text-lg leading-relaxed mb-6">{selectedProject.fullDescription}</p>
+
+        {/* Stats */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 sm:mb-8">
+          <div className="bg-green-50 p-4 rounded-lg text-center">
+            <div className="text-lg sm:text-xl font-bold text-green-600 mb-1">{selectedProject.impact}</div>
+            <div className="text-gray-600 text-xs sm:text-sm">Impacto Direto</div>
+          </div>
+          <div className="bg-blue-50 p-4 rounded-lg text-center">
+            <div className="text-lg sm:text-xl font-bold text-blue-600 mb-1">{selectedProject.beneficiaries}</div>
+            <div className="text-gray-600 text-xs sm:text-sm">Beneficiários</div>
+          </div>
+          <div className="bg-purple-50 p-4 rounded-lg text-center">
+            <div className="text-lg sm:text-xl font-bold text-purple-600 mb-1">{selectedProject.duration}</div>
+            <div className="text-gray-600 text-xs sm:text-sm">Duração</div>
+          </div>
+          <div className="bg-orange-50 p-4 rounded-lg text-center">
+            <div className="text-lg sm:text-xl font-bold text-orange-600 mb-1">{selectedProject.partners.length}</div>
+            <div className="text-gray-600 text-xs sm:text-sm">Parceiros</div>
           </div>
         </div>
-      )}
+
+        {/* Objetivos */}
+        <div className="mb-6 sm:mb-8">
+          <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-4">Objetivos e Metas</h3>
+          <div className="grid sm:grid-cols-2 gap-3">
+            {selectedProject.goals.map((goal, index) => (
+              <div key={index} className="flex items-center">
+                <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-600 mr-3 flex-shrink-0" />
+                <span className="text-gray-700 text-sm sm:text-base">{goal}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Parceiros */}
+        <div className="mb-6 sm:mb-8">
+          <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-4">Parceiros</h3>
+          <div className="flex flex-wrap gap-2">
+            {selectedProject.partners.map((partner, index) => (
+              <span key={index} className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">
+                {partner}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Galeria */}
+        <div className="mb-6 sm:mb-8">
+          <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-4">Galeria do Projeto</h3>
+          <div className="grid grid-cols-3 gap-2 sm:gap-4">
+            {selectedProject.gallery.map((image, index) => (
+              <img
+                key={index}
+                src={image}
+                alt={`${selectedProject.title} - ${index + 1}`}
+                className="w-full h-20 sm:h-24 object-cover rounded-lg hover:opacity-80 transition-opacity cursor-pointer"
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Botões */}
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+          <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center justify-center text-sm sm:text-base">
+            <Heart className="w-4 h-4 mr-2" />
+            Apoiar este projeto
+          </button>
+          <button className="border-2 border-green-600 text-green-600 hover:bg-green-50 px-6 py-3 rounded-lg font-medium transition-colors flex items-center justify-center text-sm sm:text-base">
+            <Users className="w-4 h-4 mr-2" />
+            Ser voluntário
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
 
       {/* CTA Section */}
       <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-r from-green-600 to-emerald-600">

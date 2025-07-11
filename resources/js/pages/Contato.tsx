@@ -37,13 +37,13 @@ const ContactPage = () => {
     phone: '',
     subject: '',
     message: '',
-    interest: 'geral'
+    interest: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
   // Coordenadas de Itabira - MG
-  const position: [number, number] = [-19.6189, -43.2269];
+  const position: [number, number] = [-19.622834689788483, -43.22178076125677];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -67,7 +67,7 @@ const ContactPage = () => {
         phone: '',
         subject: '',
         message: '',
-        interest: 'geral'
+        interest: ''
       });
       
       // Reset status após 5 segundos
@@ -91,8 +91,8 @@ const ContactPage = () => {
     {
       icon: <MapPin className="w-5 h-5 sm:w-6 sm:h-6" />,
       title: "Endereço",
-      info: "Rua das Flores, 123 - Centro",
-      description: "Itabira - MG, CEP: 35900-000"
+      info: "Avenida das Rosas, 127, Sala 01 - São Pedro",
+      description: "Itabira - MG, CEP: 35900-117"
     },
     {
       icon: <Clock className="w-5 h-5 sm:w-6 sm:h-6" />,
@@ -251,8 +251,10 @@ const ContactPage = () => {
                       name="interest"
                       value={formData.interest}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors text-sm sm:text-base"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg appearance-none focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm sm:text-basew-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 bg-white placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors text-sm sm:text-base"
                     >
+                      <option value="" disabled selected>Selecione o Interesse</option>
+
                       <option value="geral">Informações Gerais</option>
                       <option value="voluntario">Ser Voluntário</option>
                       <option value="doacao">Fazer Doação</option>
@@ -324,8 +326,8 @@ const ContactPage = () => {
                   <div className="flex items-start">
                     <MapPin className="w-5 h-5 sm:w-6 sm:h-6 text-green-600 mr-3 mt-1 flex-shrink-0" />
                     <div>
-                      <p className="font-medium text-gray-900 text-sm sm:text-base">Rua das Flores, 123 - Centro</p>
-                      <p className="text-gray-600 text-sm">Itabira - MG, CEP: 35900-000</p>
+                      <p className="font-medium text-gray-900 text-sm sm:text-base">Avenida das Rosas, 127, Sala 01 - São Pedro</p>
+                      <p className="text-gray-600 text-sm">Itabira - MG, CEP: 35900-117</p>
                     </div>
                   </div>
                   <div className="flex items-start">
@@ -342,7 +344,8 @@ const ContactPage = () => {
               {/* Interactive Map */}
               <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
                 <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">Nossa Localização</h3>
-                <div className="h-64 sm:h-80 rounded-lg overflow-hidden">
+                <div className="relative z-0 h-64 sm:h-80 rounded-lg overflow-hidden">
+                  
                   <MapContainer 
                     center={position} 
                     zoom={15} 
@@ -357,7 +360,7 @@ const ContactPage = () => {
                       <Popup>
                         <div className="text-center">
                           <strong>SAVI - Sociedade Ambiente Vivo Itabira</strong><br />
-                          Rua das Flores, 123 - Centro<br />
+                          Avenida das Rosas, 127, Sala 01 - São Pedro<br />
                           Itabira - MG
                         </div>
                       </Popup>
