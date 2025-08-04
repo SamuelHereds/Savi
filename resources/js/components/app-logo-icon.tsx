@@ -1,13 +1,18 @@
 // resources/js/components/AppLogoIcon.tsx
 import { SVGAttributes } from 'react';
 
+
 export default function AppLogoIcon(props: SVGAttributes<SVGElement>) {
   return (
+    <svg viewBox="0 0 100 100" {...props} xmlns="http://www.w3.org/2000/svg">
+  <circle cx="50" cy="50" r="50" fill="#1a1a1a" />{
+  
     <svg
       {...props}
       viewBox="0 0 1080 1080"
       xmlns="http://www.w3.org/2000/svg"
     >
+   
       <defs>
         <style>
           {`
@@ -40,5 +45,7 @@ export default function AppLogoIcon(props: SVGAttributes<SVGElement>) {
         r="20.51"
       />
     </svg>
+    }
+</svg>
   );
 }

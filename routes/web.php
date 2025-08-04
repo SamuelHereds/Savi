@@ -6,6 +6,9 @@ use Inertia\Inertia;
 Route::get('/', function () {
     return Inertia::render('Home');
 })->name('home');
+use App\Http\Controllers\ContactMessageController;
+
+Route::post('/contato', [ContactMessageController::class, 'store']);
 
 Route::get('/contato', function(){  
     return inertia::render('Contato');

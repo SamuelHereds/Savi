@@ -1,16 +1,17 @@
 // resources/js/Pages/Contato.tsx
+import { useForm } from '@inertiajs/react';
 import { ReactNode } from 'react';
 import MainLayout from '@/layouts/Main/main-layout';
-import React, { useState,  } from 'react';
+import React, { useState, } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { 
-  Mail, 
-  Phone, 
-  MapPin, 
-  Clock, 
-  Send, 
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Clock,
+  Send,
   MessageSquare,
   Users,
   Heart,
@@ -34,7 +35,7 @@ L.Icon.Default.mergeOptions({
 });
 
 const ContactPage = () => {
-  const [formData, setFormData] = useState({
+  const { data, setData, post, processing, reset } = useForm({
     name: '',
     email: '',
     phone: '',
@@ -42,40 +43,27 @@ const ContactPage = () => {
     message: '',
     interest: ''
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
   // Coordenadas de Itabira - MG
   const position: [number, number] = [-19.622834689788483, -43.22178076125677];
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    
-    // Simular envio do formulário
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setSubmitStatus('success');
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        subject: '',
-        message: '',
-        interest: ''
-      });
-      
-      // Reset status após 5 segundos
-      setTimeout(() => setSubmitStatus('idle'), 5000);
-    }, 2000);
+    post('/contato', {
+      onSuccess: () => {
+        setSubmitStatus('success');
+        reset();
+        setTimeout(() => setSubmitStatus('idle'), 5000);
+      },
+      onError: () => {
+        setSubmitStatus('error');
+        setTimeout(() => setSubmitStatus('idle'), 5000);
+      },
+    });
   };
 
   const contactInfo = [
@@ -146,7 +134,7 @@ const ContactPage = () => {
               Entre em <span className="text-green-600">Contato</span>
             </h1>
             <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto mb-6 sm:mb-8 leading-relaxed px-4">
-              Tem alguma dúvida, sugestão ou quer fazer parte da nossa missão? 
+              Tem alguma dúvida, sugestão ou quer fazer parte da nossa missão?
               Estamos sempre prontos para conversar e construir juntos um futuro mais sustentável para Itabira.
             </p>
           </div>
@@ -183,11 +171,23 @@ const ContactPage = () => {
               </p>
 
               {submitStatus === 'success' && (
-                <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6 flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-600 mr-3 flex-shrink-0" />
-                  <p className="text-green-800 text-sm sm:text-base">Mensagem enviada com sucesso! Entraremos em contato em breve.</p>
+                <div className="relative rounded-xl border border-green-300 bg-green-50 p-4 mb-6 shadow-sm">
+                  <div className="flex items-start space-x-3">
+                    <CheckCircle className="w-5 h-5 text-green-600 mt-1" />
+                    <div>
+                      <h3 className="text-green-800 font-semibold text-sm sm:text-base">Mensagem enviada com sucesso</h3>
+                      <p className="text-green-700 text-sm">Obrigado pelo contato! Responderemos o mais breve possível.</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setSubmitStatus('idle')}
+                    className="absolute top-2 right-2 text-green-600 hover:text-green-800 text-sm"
+                  >
+                    ×
+                  </button>
                 </div>
               )}
+
 
               {submitStatus === 'error' && (
                 <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 flex items-center">
@@ -206,10 +206,10 @@ const ContactPage = () => {
                       type="text"
                       id="name"
                       name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
+                      value={data.name}
+                      onChange={(e) => setData('name', e.target.value)}
                       required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors text-sm sm:text-base"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors text-sm sm:text-base text-gray-900"
                       placeholder="Seu nome completo"
                     />
                   </div>
@@ -221,10 +221,10 @@ const ContactPage = () => {
                       type="email"
                       id="email"
                       name="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
+                      value={data.email}
+                      onChange={(e) => setData('email', e.target.value)}
                       required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors text-sm sm:text-base"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors text-sm sm:text-base text-gray-900"
                       placeholder="seu@email.com"
                     />
                   </div>
@@ -239,9 +239,9 @@ const ContactPage = () => {
                       type="tel"
                       id="phone"
                       name="phone"
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors text-sm sm:text-base"
+                      value={data.phone}
+                      onChange={(e) => setData('phone', e.target.value)}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors text-sm sm:text-base text-gray-900"
                       placeholder="(31) 99999-9999"
                     />
                   </div>
@@ -252,9 +252,9 @@ const ContactPage = () => {
                     <select
                       id="interest"
                       name="interest"
-                      value={formData.interest}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg appearance-none focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm sm:text-basew-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 bg-white placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors text-sm sm:text-base"
+                      value={data.interest}
+                      onChange={(e) => setData('interest', e.target.value)}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg appearance-none focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm sm:text-basew-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 bg-white placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors text-sm sm:text-base "
                     >
                       <option value="" disabled selected>Selecione o Interesse</option>
 
@@ -276,10 +276,10 @@ const ContactPage = () => {
                     type="text"
                     id="subject"
                     name="subject"
-                    value={formData.subject}
-                    onChange={handleInputChange}
+                    value={data.subject}
+                    onChange={(e) => setData('subject', e.target.value)}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors text-sm sm:text-base"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors text-sm sm:text-base text-gray-900"
                     placeholder="Qual o assunto da sua mensagem?"
                   />
                 </div>
@@ -291,21 +291,21 @@ const ContactPage = () => {
                   <textarea
                     id="message"
                     name="message"
-                    value={formData.message}
-                    onChange={handleInputChange}
+                    value={data.message}
+                    onChange={(e) => setData('message', e.target.value)}
                     required
                     rows={5}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors resize-none text-sm sm:text-base"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors resize-none text-sm sm:text-base text-gray-900"
                     placeholder="Conte-nos mais sobre sua mensagem, dúvida ou como podemos ajudar..."
                   />
                 </div>
 
                 <button
                   type="submit"
-                  disabled={isSubmitting}
-                  className="w-full bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center justify-center text-sm sm:text-base"
+                  disabled={processing}
+                  className="w-full bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center justify-center text-sm sm:text-base "
                 >
-                  {isSubmitting ? (
+                  {processing ? (
                     <>
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                       Enviando...
@@ -348,10 +348,10 @@ const ContactPage = () => {
               <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
                 <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">Nossa Localização</h3>
                 <div className="relative z-0 h-64 sm:h-80 rounded-lg overflow-hidden">
-                  
-                  <MapContainer 
-                    center={position} 
-                    zoom={15} 
+
+                  <MapContainer
+                    center={position}
+                    zoom={15}
                     style={{ height: '100%', width: '100%' }}
                     className="rounded-lg"
                   >
@@ -417,21 +417,21 @@ const ContactPage = () => {
             <div className="bg-gray-50 p-4 sm:p-6 rounded-lg">
               <h3 className="font-bold text-gray-900 mb-2 text-sm sm:text-base">Como posso me tornar voluntário?</h3>
               <p className="text-gray-600 text-sm sm:text-base">
-                Entre em contato conosco através do formulário acima ou pelos nossos canais de comunicação. 
+                Entre em contato conosco através do formulário acima ou pelos nossos canais de comunicação.
                 Temos diversas oportunidades de voluntariado adequadas a diferentes perfis e disponibilidades.
               </p>
             </div>
             <div className="bg-gray-50 p-4 sm:p-6 rounded-lg">
               <h3 className="font-bold text-gray-900 mb-2 text-sm sm:text-base">Vocês oferecem cursos de educação ambiental?</h3>
               <p className="text-gray-600 text-sm sm:text-base">
-                Sim! Oferecemos cursos, workshops e palestras sobre educação ambiental para escolas, 
+                Sim! Oferecemos cursos, workshops e palestras sobre educação ambiental para escolas,
                 empresas e comunidades. Entre em contato para conhecer nossa programação.
               </p>
             </div>
             <div className="bg-gray-50 p-4 sm:p-6 rounded-lg">
               <h3 className="font-bold text-gray-900 mb-2 text-sm sm:text-base">Como posso fazer uma doação?</h3>
               <p className="text-gray-600 text-sm sm:text-base">
-                Aceitamos doações financeiras, materiais e equipamentos. Entre em contato conosco 
+                Aceitamos doações financeiras, materiais e equipamentos. Entre em contato conosco
                 para conhecer as formas de contribuição e como sua doação será utilizada.
               </p>
             </div>
@@ -446,7 +446,7 @@ const ContactPage = () => {
             Vamos Construir Juntos
           </h2>
           <p className="text-lg sm:text-xl text-green-100 mb-6 sm:mb-8 leading-relaxed px-2">
-            Cada conversa é o início de uma nova possibilidade. 
+            Cada conversa é o início de uma nova possibilidade.
             Estamos ansiosos para conhecer suas ideias e como podemos colaborar.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4">
